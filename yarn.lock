@@ -790,10 +790,10 @@
   resolved "https://registry.yarnpkg.com/@mkvlrn/eslint-config/-/eslint-config-8.0.0.tgz#ac0caa95124fe73758651add149f6f00dc2c4de3"
   integrity sha512-byoJcsWUxj7xHrowbZWjl580PAvVN5UJHkHc2oHFpLBl84yWMgLuGktdTJ261uwTH66hIuZJ/EGCdxU9ldBbJw==
 
-"@mkvlrn/prettier-config@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@mkvlrn/prettier-config/-/prettier-config-2.0.0.tgz#60216f3c2bbd57292a55a1279c3df263740f0812"
-  integrity sha512-DiqgxWAlXo608vS+6pKC+114EYXKbaYGCzt1lNVMRTP0CLmuKgEXK8aWnjy9JFJtuCkTlFkIP59CTAVboyz2rA==
+"@mkvlrn/prettier-config@^3.0.0":
+  version "3.0.0"
+  resolved "https://registry.yarnpkg.com/@mkvlrn/prettier-config/-/prettier-config-3.0.0.tgz#00bebb7dbc4330842a2f58aadb93f2f91329a7e2"
+  integrity sha512-3WuJEXsvPZEZSeswfUgwBUzKQEToi6S4V10/XO3RZa5U6tHhcDzGF1XZ8YSQbjRGFYE3aJ5JSleWi0L40ylUlA==
 
 "@nodelib/fs.scandir@2.1.5":
   version "2.1.5"
