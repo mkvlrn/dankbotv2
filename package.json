@@ -34,7 +34,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.2",
-    "@commitlint/config-conventional": "^17.0.2",
+    "@commitlint/config-conventional": "^17.0.3",
     "@mkvlrn/eslint-config": "^8.0.0",
     "@mkvlrn/prettier-config": "^2.0.0",
     "@types/jest": "^28.1.1",
