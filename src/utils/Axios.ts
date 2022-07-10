@@ -1,17 +1,15 @@
-import axios, { AxiosInstance } from 'axios';
+import { singleton } from 'tsyringe';
+import axios, { AxiosInstance, AxiosRequestConfig } from 'axios';
 
+@singleton()
 export class Axios {
-  private static instance: AxiosInstance;
+  public instance: AxiosInstance;
 
-  private constructor() {
-    //
+  constructor() {
+    this.instance = axios.create();
   }
 
-  public static getInstance() {
-    if (!this.instance) {
-      this.instance = axios.create();
-    }
-
-    return this.instance;
+  async get<T>(url: string, config?: AxiosRequestConfig) {
+    return this.instance.get<T>(url, config);
   }
 }

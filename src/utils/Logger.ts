@@ -1,23 +1,33 @@
+import { singleton } from 'tsyringe';
 import winston, { createLogger, Logger as WinstonLogger } from 'winston';
 
+@singleton()
 export class Logger {
-  private static instance: WinstonLogger;
+  private instance: WinstonLogger;
 
-  private constructor() {
-    //
+  constructor() {
+    this.instance = createLogger({
+      transports: [
+        new winston.transports.Console({
+          format: winston.format.cli(),
+        }),
+      ],
+    });
   }
 
-  public static getInstance() {
-    if (!this.instance) {
-      this.instance = createLogger({
-        transports: [
-          new winston.transports.Console({
-            format: winston.format.cli(),
-          }),
-        ],
-      });
-    }
+  info(msg: string) {
+    this.instance.info(msg);
+  }
 
-    return this.instance;
+  debug(msg: string) {
+    this.instance.debug(msg);
+  }
+
+  warn(msg: string) {
+    this.instance.warn(msg);
+  }
+
+  error(msg: string) {
+    this.instance.error(msg);
   }
 }

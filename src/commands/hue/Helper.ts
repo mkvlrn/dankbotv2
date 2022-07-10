@@ -7,24 +7,21 @@ import {
   MessageSelectMenu,
   SelectMenuInteraction,
 } from 'discord.js';
+import { autoInjectable, singleton } from 'tsyringe';
 
 import { Axios } from '#utils/Axios';
 import { Logger } from '#utils/Logger';
 import { Post, RedditResponse, Reply } from './types';
 import sublist from './subs.json';
 
+@singleton()
+@autoInjectable()
 export class Helper {
-  private static logger = Logger.getInstance();
+  private subList = sublist;
 
-  private static axios = Axios.getInstance();
+  constructor(private axios: Axios, private logger: Logger) {}
 
-  private static subList = sublist;
-
-  private constructor() {
-    //
-  }
-
-  private static getMedia(originalPost: Post) {
+  private getMedia(originalPost: Post) {
     const reply: Reply = {
       subreddit: originalPost.subreddit_name_prefixed,
       embed: new MessageEmbed()
@@ -53,8 +50,8 @@ export class Helper {
     return reply;
   }
 
-  private static async getPost(subreddit: string) {
-    const subs = sublist.map((s) => s.name.toLowerCase());
+  private async getPost(subreddit: string) {
+    const subs = this.subList.map((s) => s.name.toLowerCase());
     const sub: string =
       subreddit === 'Random'
         ? subs[Math.floor(Math.random() * subs.length)]
@@ -64,14 +61,7 @@ export class Helper {
     let post: Post | undefined;
 
     let timeout = 0;
-    while (
-      !post ||
-      ![
-        'image',
-        'hosted:video',
-        'rich:video',
-      ].includes(post.post_hint!)
-    ) {
+    while (!post || !['image', 'hosted:video', 'rich:video'].includes(post.post_hint!)) {
       timeout += 1;
       if (timeout >= 5) {
         throw new Error('timeout');
@@ -84,12 +74,12 @@ export class Helper {
       return this.getMedia(post);
     } catch (error) {
       const err = error as Error;
-      this.logger.debug(post);
+      this.logger.debug(JSON.stringify(post));
       throw err;
     }
   }
 
-  public static async commandInteract(interaction: CommandInteraction) {
+  public async commandInteract(interaction: CommandInteraction) {
     const sizePicker = new MessageSelectMenu()
       .setCustomId('hue-sub')
       .addOptions(
@@ -100,7 +90,7 @@ export class Helper {
             value: 'Random',
           },
         ].concat(
-          sublist
+          this.subList
             .sort((a, b) => a.name.localeCompare(b.name))
             .map((s) => ({
               label: s.name,
@@ -117,7 +107,7 @@ export class Helper {
     });
   }
 
-  public static async selectMenuInteract(interaction: SelectMenuInteraction) {
+  public async selectMenuInteract(interaction: SelectMenuInteraction) {
     const { channel, message, values } = interaction;
     const { user } = message!.interaction!;
     const sub = values[0];
@@ -132,7 +122,7 @@ export class Helper {
       const reply = await this.getPost(sub);
       const subName =
         sub !== 'Random'
-          ? sublist.find((s) => s.name.toLowerCase() === sub)!.name
+          ? this.subList.find((s) => s.name.toLowerCase() === sub)!.name
           : `Random (${reply.subreddit})`;
       reply.embed
         .setColor('BLURPLE')
@@ -146,7 +136,8 @@ export class Helper {
         await channel?.send(reply.extra.replace(/\?.*/, ''));
       }
     } catch (err) {
-      this.logger.error(err);
+      const error = err as unknown as Error;
+      this.logger.error(error.message);
     }
   }
 }

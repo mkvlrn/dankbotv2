@@ -1,12 +1,12 @@
 import { CommandInteraction } from 'discord.js';
+
 import { Command } from '#types/Command';
+import { container } from 'tsyringe';
 
-async function execute(interaction: CommandInteraction) {
-  interaction.reply('pong!');
-}
+const ping = container.resolve(Command);
+ping.setup('ping', 'pings you back');
+ping.execute = (arg: CommandInteraction) => {
+  arg.reply('pong');
+};
 
-export const ping = new Command<CommandInteraction>(
-  'ping',
-  'Pongs you back with a vengeance',
-  execute,
-);
+export { ping };
