@@ -1,11 +1,11 @@
 import { Bot } from '#types/Bot';
 import { Event } from '#types/Event';
-import { Logger } from '#utils/Logger';
 import { CommandInteraction, SelectMenuInteraction } from 'discord.js';
+import { container } from 'tsyringe';
 
-const logger = Logger.getInstance();
-
-async function execute(arg: CommandInteraction | SelectMenuInteraction): Promise<void> {
+const interaction = container.resolve(Event);
+interaction.setup('interactionCreate', false);
+interaction.execute = async (arg: CommandInteraction | SelectMenuInteraction) => {
   const bot = arg.client as Bot;
   const commandName: string =
     arg.constructor.name === 'CommandInteraction'
@@ -18,12 +18,12 @@ async function execute(arg: CommandInteraction | SelectMenuInteraction): Promise
     await command?.execute(arg);
   } catch (error) {
     const err = error as Error;
-    logger.error(err.message);
+    interaction.logger.error(err.message);
     await arg.reply({
       content: 'There was an error while executing this command!',
       ephemeral: true,
     });
   }
-}
+};
 
-export const interaction = new Event('interactionCreate', false, execute);
+export { interaction };

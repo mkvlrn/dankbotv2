@@ -1,12 +1,12 @@
 import { Client } from 'discord.js';
+import { container } from 'tsyringe';
 
 import { Event } from '#types/Event';
-import { Logger } from '#utils/Logger';
 
-const logger = Logger.getInstance();
+const ready = container.resolve(Event);
+ready.setup('ready', true);
+ready.execute = (arg: Client) => {
+  ready.logger.info(`🤖 bot logged in as ${arg.user?.tag} 🤖`);
+};
 
-async function execute(arg: Client) {
-  logger.info(`🤖 bot logged in as ${arg.user?.tag} 🤖`);
-}
-
-export const ready = new Event('ready', false, execute);
+export { ready };

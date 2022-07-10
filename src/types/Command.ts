@@ -1,13 +1,17 @@
 import { SlashCommandBuilder } from '@discordjs/builders';
+import { autoInjectable } from 'tsyringe';
 
-export class Command<T> {
-  data: Partial<SlashCommandBuilder>;
+import { Logger } from '#utils/Logger';
 
-  constructor(
-    name: string,
-    description: string,
-    public execute: (interaction: T) => Promise<void>,
-  ) {
+@autoInjectable()
+export class Command {
+  public data: Partial<SlashCommandBuilder> = {};
+
+  public execute: (arg: any) => void | Promise<void> = () => {};
+
+  constructor(private logger: Logger) {}
+
+  setup(name: string, description: string) {
     this.data = new SlashCommandBuilder().setName(name).setDescription(description);
   }
 }
