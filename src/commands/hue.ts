@@ -1,11 +1,10 @@
 import { CommandInteraction, SelectMenuInteraction } from 'discord.js';
-import { container } from 'tsyringe';
 
 import { Command } from '#types/Command';
 import { Helper } from './hue/Helper';
 
-const hue = container.resolve(Command);
-const helper = container.resolve(Helper);
+const hue = new Command();
+const helper = new Helper();
 hue.setup('hue', 'random stuff shamelessly stolen from reddit');
 hue.execute = async (arg: CommandInteraction | SelectMenuInteraction) => {
   if (arg.constructor.name === 'CommandInteraction') {

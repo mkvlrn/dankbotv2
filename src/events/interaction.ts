@@ -1,9 +1,8 @@
 import { Bot } from '#types/Bot';
 import { Event } from '#types/Event';
 import { CommandInteraction, SelectMenuInteraction } from 'discord.js';
-import { container } from 'tsyringe';
 
-const interaction = container.resolve(Event);
+const interaction = new Event();
 interaction.setup('interactionCreate', false);
 interaction.execute = async (arg: CommandInteraction | SelectMenuInteraction) => {
   const bot = arg.client as Bot;
@@ -18,7 +17,7 @@ interaction.execute = async (arg: CommandInteraction | SelectMenuInteraction) =>
     await command?.execute(arg);
   } catch (error) {
     const err = error as Error;
-    interaction.logger.error(err.message);
+    interaction.logger!.error(err.message);
     await arg.reply({
       content: 'There was an error while executing this command!',
       ephemeral: true,

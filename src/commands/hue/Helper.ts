@@ -19,7 +19,7 @@ import sublist from './subs.json';
 export class Helper {
   private subList = sublist;
 
-  constructor(private axios: Axios, private logger: Logger) {}
+  constructor(private axios?: Axios, private logger?: Logger) {}
 
   private getMedia(originalPost: Post) {
     const reply: Reply = {
@@ -66,7 +66,7 @@ export class Helper {
       if (timeout >= 5) {
         throw new Error('timeout');
       }
-      const response = await this.axios.get<RedditResponse>(subUrl);
+      const response = await this.axios!.get<RedditResponse>(subUrl);
       post = response.data[0].data.children[0].data;
     }
 
@@ -74,7 +74,7 @@ export class Helper {
       return this.getMedia(post);
     } catch (error) {
       const err = error as Error;
-      this.logger.debug(JSON.stringify(post));
+      this.logger!.debug(JSON.stringify(post));
       throw err;
     }
   }
@@ -137,7 +137,7 @@ export class Helper {
       }
     } catch (err) {
       const error = err as unknown as Error;
-      this.logger.error(error.message);
+      this.logger!.error(error.message);
     }
   }
 }

@@ -18,8 +18,11 @@
   },
   "main": "index.js",
   "scripts": {
-    "build": "npx tsc -p tsconfig.prod.json",
+    "build": "npx tsc -p tsconfig.prod.json && npx tsc-alias -p tsconfig.prod.json",
     "dev": "npx tsnd -r tsconfig-paths/register src",
+    "dev:register": "npm run dev --register",
+    "start": "node build",
+    "start:register": "node build --register",
     "prepare": "npx simple-git-hooks",
     "test": "jest --passWithNoTests --config .jestrc.json"
   },
@@ -56,6 +59,7 @@
     "simple-git-hooks": "^2.8.0",
     "ts-jest": "^28.0.5",
     "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.6.11",
     "tsconfig-paths": "^4.0.0",
     "typescript": "^4.7.4"
   }
