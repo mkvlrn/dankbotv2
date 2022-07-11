@@ -34,10 +34,7 @@
     "removeComments": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true,
-    "types": [
-      "src/types"
-    ]
+    "strict": true
   },
   "include": [
     "src/**/*.ts",

@@ -14,7 +14,7 @@ export class Bot extends Client {
 
   public events: Event[] = [];
 
-  constructor(private logger: Logger) {
+  constructor(private logger?: Logger) {
     super({ intents: [Intents.FLAGS.GUILDS] });
   }
 
@@ -41,10 +41,10 @@ export class Bot extends Client {
 
     try {
       await rest.put(Routes.applicationGuildCommands(APP_ID!, SERVER_ID!), { body });
-      this.logger.info('bot commands registered!');
+      this.logger!.info('bot commands registered!');
     } catch (error) {
       const err = error as Error;
-      this.logger.error(err.message);
+      this.logger!.error(err.message);
     }
   }
 }

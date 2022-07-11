@@ -9,7 +9,7 @@ export class Command {
 
   public execute: (arg: any) => void | Promise<void> = () => {};
 
-  constructor(private logger: Logger) {}
+  constructor(private logger?: Logger) {}
 
   setup(name: string, description: string) {
     this.data = new SlashCommandBuilder().setName(name).setDescription(description);

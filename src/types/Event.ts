@@ -10,7 +10,7 @@ export class Event {
 
   public execute: (arg: any) => void | Promise<void> = () => {};
 
-  constructor(public logger: Logger) {}
+  constructor(public logger?: Logger) {}
 
   setup(name: string, once: boolean) {
     this.name = name;
